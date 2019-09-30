@@ -33,15 +33,16 @@ de /home/u3 et /home/u4
  - `chown u1:groupe2 /home/u4` 
 
 <span style='color:red'>6.</span> Remplacez le groupe primaire des utilisateurs :
-- groupe1 pour u1 et u2<br>
-- groupe2 pour u3 et u4
-
+- groupe1 pour u1 et u2 : `usermod -g groupe1 u1 ` puis `usermod -g groupe1 u2`
+- groupe2 pour u3 et u4 : `usermod -g groupe2 u3` puis `usermod -g groupe2 u4`
 
 <span style='color:red'>7.</span> Créez deux répertoires /home/groupe1 et /home/groupe2 pour le contenu commun aux groupes, et
 mettez en place les permissions permettant aux membres de chaque groupe d’écrire dans le dossier
 associé.
 
-
+Il faut faire `mkdir /home/groupe1 && mkdir /home/groupe2`
+Puis `chown u1:groupe1 groupe1` et `chown u2:groupe2 groupe2` pour mettre groupe1 et groupe2 propriétaires de leurs fichiers
+Et enfin `chmod 720 groupe1 groupe2`
 
 <span style='color:red'>8.</span> Comment faire pour que, dans ces dossiers, seul le propriétaire d’un fichier ait le droit de renommer
 ou supprimer ce fichier ?
