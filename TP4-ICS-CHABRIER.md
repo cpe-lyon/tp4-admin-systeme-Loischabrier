@@ -107,7 +107,7 @@ Pour forcer l'oubli, il est possible d'exécuter la commande `sudo -k`.
 <span style='color:red'>1.</span> Dans votre $HOME, créez un dossier test, et dans ce dossier un fichier contenant quelques lignes de texte. Quels sont les droits sur test et fichier?
 </span>
 
-`cd /home &&  sudo mkdir test && cd test &&  sudo touch fichier &&  sudo echo 'salut' > fichier`
+<br>`cd /home &&  sudo mkdir test && cd test &&  sudo touch fichier &&  sudo echo 'salut' > fichier`
 <br>Les droits du dossier test sont 755 (ce sont les droits de base pour un dossier sous linux) et les droits du fichier sont 644 (droits de base pour un fichier sous linux).
 
 <span style='color:red'>2.</span> Retirez tous les droits sur ce fichier (même pour vous), puis essayez de le modifier et de l’afficher en tant que root. Conclusion ?
