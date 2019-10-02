@@ -116,49 +116,60 @@ Pour forcer l'oubli, il est possible d'exécuter la commande `sudo -k`.
 
 <span style='color:red'>3.</span> Redonnez vous les droits en écriture et exécution sur fichier puis exécutez la commande echo "echo Hello" > fichier. On a vu lors des TP précédents que cette commande remplace le contenu d’un fichier s’il existe déjà. Que peut-on dire au sujet des droits ?
 
-`chmod 300 fichier && echo "hello world" > fichier` :
+`chmod 300 fichier && echo "echo hello" > fichier` : il est possible d'écrire dans le fichier et le contenu précédent a été remplacé.
 
 <span style='color:red'>4.</span> Essayez d’exécuter le fichier. Est-ce que cela fonctionne ? Et avec sudo ? Expliquez.
 
-
+Sans sudo, cela ne fonctionne pas puisque nous n'avons pas les droits d'éxecution. En revanche, avec sudo, cela fonctionne.
 
 <span style='color:red'>5.</span> Placez-vous dans le répertoire test, et retirez-vous le droit en lecture pour ce répertoire. Listez le contenu du répertoire, puis exécutez ou affichez le contenu du fichier fichier. Qu’en déduisez-vous ? Rétablissez le droit en lecture sur test
 
-
+D'abord, `sudo chmod u-r ../test` puis `ls`. Il n'est pas possible d'éxecuter ou lire le fichier, puisque nous n'avons plus les droits.
 
 <span style='color:red'>6.</span> Créez dans test un fichier nouveau ainsi qu’un répertoire sstest. Retirez au fichier nouveau et au répertoire test le droit en écriture. Tentez de modifier le fichier nouveau. Rétablissez ensuite le droit en écriture au répertoire test. Tentez de modifier le fichier nouveau, puis de le supprimer. Que pouvez- vous déduire de toutes ces manipulations ?
 
+    nano nouveau
+    mkdir sstest
+    chmod u-w nouveau
+    chmod u-w ../test
+    nano nouveau
 
+Nous n'avons pas la permission de modifier le fichier.
+
+    chmod u+w ../test
+    nano nouveau
+    
+Toujours impossible de modifier le fichier.
+<br>On constate donc que les fichiers dans un répertoire n'héritent pas des droits que l'on affecte à ce dernier. Il faut leur affecter des droits spécifiques à eux directement.
 
 <span style='color:red'>7.</span> Positionnez vous dans votre répertoire personnel, puis retirez le droit en exécution du répertoire test. Tentez de créer, supprimer, ou modifier un fichier dans le répertoire test, de vous y déplacer, d’en lister le contenu, etc...Qu’en déduisez vous quant au sens du droit en exécution pour les répertoires ?
 
-
+Aucune de ces actions ne peut être effectuée car nous avons retiré le droit d'éxecution du répertoire. On peut donc en déduire que le droit d'éxecution pour les répertoire permet de modifier et manipuler ce qu'il y a dedans.
 
 <span style='color:red'>8.</span> Rétablissez le droit en exécution du répertoire test. Positionnez vous dans ce répertoire et retirez lui à nouveau le droit d’exécution. Essayez de créer, supprimer et modifier un fichier dans le répertoire test, de vous déplacer dans ssrep, de lister son contenu. Qu’en concluez-vous quant à l’influence des droits que l’on possède sur le répertoire courant ? Peut-on retourner dans le répertoire parent avec ”cd ..” ? Pouvez-vous donner une explication ?
 
+Entrer `chmod 640 test`.
 
+<span style='color:red'>9.</span> Définissez un umask très restrictif qui interdit à quiconque à part vous l’accès en lecture ou en écriture, ainsi que la traversée de vos répertoires. Testez sur un nouveau fichier et un nouveau répertoire.
 
-<span style='color:red'>9.</span> Rétablissez le droit en exécution du répertoire test. Attribuez au fichier fichier les droits suffisants pour qu’une autre personne de votre groupe puisse y accéder en lecture, mais pas en écriture.
+On peut utiliser ce umask-ci : `umask 077 test`
 
+<span style='color:red'>10.</span> Définissez un umask équilibré qui vous autorise un accès complet et autorise un accès en lecture aux membres de votre groupe. Testez sur un nouveau fichier et un nouveau répertoire.
 
+On peut utiliser ce umask-ci : `umask 022 test`
 
-<span style='color:red'>10.</span> Définissez un umask très restrictif qui interdit à quiconque à part vous l’accès en lecture ou en écriture, ainsi que la traversée de vos répertoires. Testez sur un nouveau fichier et un nouveau répertoire.
+<span style='color:red'>11.</span> Transcrivez les commandes suivantes de la notation classique à la notation octale ou vice-versa (vouspourrez vous aider de la commandestatpour valider vos réponses) :
 
+chmod u=rx,g=wx,o=r fic : `chmod 534 -r-x--wx-r--`
+chmod uo+w,g-rx fic : `chmod 706 -rwx-x-rw-`
 
+<span style='color:red'>12.</span> Affichez les droits sur le programme passwd. Que remarquez-vous ? En affichant les droits du fichier /etc/passwd, pouvez-vous justifier les permissions sur le programme passwd ?
 
-<span style='color:red'>11.</span> Définissez un umask très permissif qui autorise tout le monde à lire vos fichiers et traverser vos réper- toires, mais n’autorise que vous à écrire. Testez sur un nouveau fichier et un nouveau répertoire.
+    cd /etc 
+    ls -l passwd    
+    -rw-r--r-- 1 root root 1801 sept. 30 21:15 /etc/passwd
 
+Le fichier est accessible par le propriétaire en lecture/ecriture, et est juste lisible pour les membres du groupe du propriétaire et les autres.
 
-
-<span style='color:red'>12.</span> Définissez un umask très restrictif qui interdit à quiconque à part vous l’accès en lecture ou en écriture, ainsi que la traversée de vos répertoires. Testez sur un nouveau fichier et un nouveau répertoire.
-
-
-
-<span style='color:red'>13.</span> Définissez un umask très restrictif qui interdit à quiconque à part vous l’accès en lecture ou en écriture, ainsi que la traversée de vos répertoires. Testez sur un nouveau fichier et un nouveau répertoire.
-
-
-
-<span style='color:red'>14.</span> Affichez les droits sur le programme passwd. Que remarquez-vous ? En affichant les droits du fichier
-/etc/passwd, pouvez-vous justifier les permissions sur le programme passwd ?
-
+C'est normal que les autres et le groupe ne puisse pas modifier ce fichier, puisqu'il est essentiel au système.
 
